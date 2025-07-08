@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OAuth Redirect</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px; font-family: Arial, sans-serif;">
+        <h2>Redirecting to app...</h2>
+        <p>Please wait while we redirect you back to the app.</p>
+    </div>
+    
+    <script>
+        // Get the current URL with all query parameters
+        const currentUrl = window.location.href;
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const error = urlParams.get('error');
+        
+        console.log('OAuth callback received:', { code, error });
+        
+        if (code) {
+            // Success - redirect to app with the authorization code
+            const appUrl = 'com.sarthak.oauth://callback' + window.location.search;
+            console.log('Redirecting to:', appUrl);
+            window.location.href = appUrl;
+        } else if (error) {
+            // Error case
+            const appUrl = 'com.sarthak.oauth://callback?error=' + encodeURIComponent(error);
+            console.log('Redirecting with error:', appUrl);
+            window.location.href = appUrl;
+        } else {
+            // Fallback
+            console.log('No code or error found, redirecting to app');
+            window.location.href = 'com.sarthak.oauth://callback';
+        }
+        
+        // Fallback - if custom scheme doesn't work, show message
+        setTimeout(() => {
+            document.body.innerHTML = `
+                <div style="text-align: center; margin-top: 50px; font-family: Arial, sans-serif;">
+                    <h2>Please return to your app</h2>
+                    <p>If you're not automatically redirected, please manually return to your app.</p>
+                    <p>Authorization code: ${code ? code.substring(0, 20) + '...' : 'Not found'}</p>
+                </div>
+            `;
+        }, 3000);
+    </script>
+</body>
+</html>
