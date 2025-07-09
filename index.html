@@ -21,18 +21,18 @@
         
         if (code) {
             // Success - redirect to app with the authorization code
-            const appUrl = 'com.sarthak.oauth://callback' + window.location.search;
+            const appUrl = 'com.checklist.app://callback' + window.location.search;
             console.log('Redirecting to:', appUrl);
             window.location.href = appUrl;
         } else if (error) {
             // Error case
-            const appUrl = 'com.sarthak.oauth://callback?error=' + encodeURIComponent(error);
+            const appUrl = 'com.checklist.app://callback?error=' + encodeURIComponent(error);
             console.log('Redirecting with error:', appUrl);
             window.location.href = appUrl;
         } else {
             // Fallback
             console.log('No code or error found, redirecting to app');
-            window.location.href = 'com.sarthak.oauth://callback';
+            window.location.href = 'com.checklist.app://callback';
         }
         
         // Fallback - if custom scheme doesn't work, show message
